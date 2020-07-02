@@ -12,7 +12,8 @@ if (token) {
     if (decodedToken.exp * 1000 < Date.now()) {
         localStorage.removeItem(token)
     } else {
-        initialState.user = decodedToken
+        const { username } = decodedToken
+        initialState.user = username
     }
 }
 
@@ -45,10 +46,12 @@ const AuthProvider = (props) => {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
     const login = (userData) => {
+        const { username } = jwtDecode(userData.token)
+        console.log(username)
         localStorage.setItem('token', userData.token)
         dispatch({
             type: 'LOGIN',
-            payload: userData,
+            payload: username,
         })
     }
 

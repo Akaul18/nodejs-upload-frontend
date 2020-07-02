@@ -6,62 +6,81 @@ import { Link } from 'react-router-dom'
 
 const Header = () => {
     const { user, logout } = useContext(AuthContext)
-    const [activeItem, setActiveItem] = useState('home')
+    const pathname = window.location.pathname
+    const path = pathname === '/' ? 'home' : pathname.substring(1)
+    const [activeItem, setActiveItem] = useState(path)
 
     const handleItemClick = (e, { name }) => setActiveItem(name)
 
-    // const { activeItem } = this.state
+    const menuBar = user ? (
+        <Menu pointing secondary size="massive" color="teal">
+            <Menu.Item name={user} active as={Link} to="/" />
+            <Menu.Item
+                name="upload"
+                active={activeItem === 'upload'}
+                onClick={handleItemClick}
+                as={Link}
+                to="/upload"
+            />
+            <Menu.Item
+                name="post"
+                active={activeItem === 'post'}
+                onClick={handleItemClick}
+                as={Link}
+                to="/post"
+            />
+            <Menu.Menu position="right">
+                <Menu.Item>
+                    <Input icon="search" placeholder="Search..." />
+                </Menu.Item>
 
-    return (
-        <div className="menu-container">
-            <Menu pointing secondary color="teal">
                 <Menu.Item
-                    name="home"
-                    active={activeItem === 'home'}
+                    name="logout"
+                    onClick={logout}
+                    // as={Link}
+                    // to="/login"
+                />
+            </Menu.Menu>
+        </Menu>
+    ) : (
+        <Menu pointing secondary size="massive" color="teal">
+            <Menu.Item
+                name="home"
+                active={activeItem === 'home'}
+                onClick={handleItemClick}
+                as={Link}
+                to="/"
+            />
+            <Menu.Item
+                name="upload"
+                active={activeItem === 'upload'}
+                onClick={handleItemClick}
+                as={Link}
+                to="/upload"
+            />
+            <Menu.Item
+                name="post"
+                active={activeItem === 'post'}
+                onClick={handleItemClick}
+                as={Link}
+                to="/post"
+            />
+            <Menu.Menu position="right">
+                <Menu.Item>
+                    <Input icon="search" placeholder="Search..." />
+                </Menu.Item>
+                <Menu.Item
+                    name="login"
+                    active={activeItem === 'login'}
                     onClick={handleItemClick}
                     as={Link}
-                    to="/"
+                    to="/login"
                 />
-                <Menu.Item
-                    name="upload"
-                    active={activeItem === 'upload'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to="/upload"
-                />
-                <Menu.Item
-                    name="post"
-                    active={activeItem === 'post'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to="/post"
-                />
-                <Menu.Menu position="right">
-                    <Menu.Item>
-                        <Input icon="search" placeholder="Search..." />
-                    </Menu.Item>
-
-                    {user ? (
-                        <Menu.Item
-                            name="logout"
-                            active={activeItem === 'logout'}
-                            onClick={logout}
-                            as={Link}
-                            to="/login"
-                        />
-                    ) : (
-                        <Menu.Item
-                            name="login"
-                            active={activeItem === 'login'}
-                            onClick={handleItemClick}
-                            as={Link}
-                            to="/login"
-                        />
-                    )}
-                </Menu.Menu>
-            </Menu>
-        </div>
+            </Menu.Menu>
+        </Menu>
     )
+
+    return <div className="menu-container">{menuBar}</div>
 }
 
 export default Header

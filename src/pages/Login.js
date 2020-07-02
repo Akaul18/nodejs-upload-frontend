@@ -4,7 +4,7 @@ import { Form, Button } from 'semantic-ui-react'
 
 const Login = (props) => {
     const { login } = useContext(AuthContext)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState('')
     const [values, setValues] = useState({
         username: '',
         password: '',
@@ -17,10 +17,10 @@ const Login = (props) => {
     const onSubmit = (e) => {
         e.preventDefault()
         if (!values.username || !values.password) {
-            setError(true)
+            setError('username/password cannot be empty')
             return
         }
-        setError(false)
+        setError('')
         fetch('http://localhost:5600/api/login', {
             method: 'POST',
             headers: {
@@ -34,7 +34,10 @@ const Login = (props) => {
                 login(userData)
                 props.history.push('/')
             })
-            .catch((err) => console.error(err.message))
+            .catch((err) => {
+                setError('invalid credentials')
+                console.error(err.message)
+            })
     }
 
     return (
@@ -51,6 +54,7 @@ const Login = (props) => {
                     name="username"
                     type="text"
                     value={values.username}
+                    error={error ? true : false}
                     onChange={onChange}
                 />
                 <Form.Input
@@ -59,6 +63,7 @@ const Login = (props) => {
                     name="password"
                     type="password"
                     value={values.password}
+                    error={error ? true : false}
                     onChange={onChange}
                 />
                 <Button type="submit" primary>
@@ -69,7 +74,8 @@ const Login = (props) => {
             {error ? (
                 <div className="ui error message">
                     <ul className="list">
-                        <li>username or password cannot be empty</li>
+                        {/* <li>username or password cannot be empty</li> */}
+                        <li>{error}</li>
                     </ul>
                 </div>
             ) : (
