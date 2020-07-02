@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import './Header.scss'
+import { AuthContext } from '../../context/authContext'
 import { Input, Menu } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
-    const [activeItem, setActiveItem] = useState('Hi Username')
+    const { user, logout } = useContext(AuthContext)
+    const [activeItem, setActiveItem] = useState('home')
 
     const handleItemClick = (e, { name }) => setActiveItem(name)
 
@@ -38,13 +40,24 @@ const Header = () => {
                     <Menu.Item>
                         <Input icon="search" placeholder="Search..." />
                     </Menu.Item>
-                    <Menu.Item
-                        name="login"
-                        active={activeItem === 'login'}
-                        onClick={handleItemClick}
-                        as={Link}
-                        to="/login"
-                    />
+
+                    {user ? (
+                        <Menu.Item
+                            name="logout"
+                            active={activeItem === 'logout'}
+                            onClick={logout}
+                            as={Link}
+                            to="/login"
+                        />
+                    ) : (
+                        <Menu.Item
+                            name="login"
+                            active={activeItem === 'login'}
+                            onClick={handleItemClick}
+                            as={Link}
+                            to="/login"
+                        />
+                    )}
                 </Menu.Menu>
             </Menu>
         </div>

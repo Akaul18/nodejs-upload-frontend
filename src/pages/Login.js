@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { AuthContext } from '../context/authContext'
 import { Form, Button } from 'semantic-ui-react'
 
-const Login = () => {
+const Login = (props) => {
+    const { login } = useContext(AuthContext)
     const [error, setError] = useState(false)
     const [values, setValues] = useState({
         username: '',
@@ -19,6 +21,20 @@ const Login = () => {
             return
         }
         setError(false)
+        fetch('http://localhost:5600/api/login', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        })
+            .then((res) => res.json())
+            .then((userData) => {
+                // console.log(token)
+                login(userData)
+                props.history.push('/')
+            })
+            .catch((err) => console.error(err.message))
     }
 
     return (
