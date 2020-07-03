@@ -2,3 +2,25 @@
     width: 50%;
     margin: 2rem auto 0;
 }
+
+.post-container {
+    margin-top: 2rem;
+    text-align: center;
+
+    h1 + div {
+        width: 60%;
+        margin: auto;
+    }
+    .all-posts-container {
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            li {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+}

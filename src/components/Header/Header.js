@@ -14,7 +14,7 @@ const Header = () => {
 
     const menuBar = user ? (
         <Menu pointing secondary size="massive" color="teal">
-            <Menu.Item name={user} active as={Link} to="/" />
+            <Menu.Item name={user} as={Link} to="/" />
             <Menu.Item
                 name="upload"
                 active={activeItem === 'upload'}
